@@ -1,0 +1,57 @@
+<!--    
+    Weather component will be responsible for: 
+    searching for a location;
+    displaying associated weather data for that location    
+-->
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <h3 class="text-center">Search for Weather:</h3>
+            <form 
+                [formGroup]="weatherSearchForm">  
+                <div class="form-group">
+                    <input 
+                        formControlName="location"
+                        class="form-control"
+                        type="text"
+                        [value]="searchValue"
+                        id="weatherLocation"
+                        aria-describedby="weatherLocation"
+                        placeholder="Please input a Location">
+                </div>
+                <div class="text-center">
+                    <button
+                        (click)="sendToAPIXU(weatherSearchForm.value)"
+                        type="submit"
+                        class="btn btn-success btn-md">
+                            Search for the weather
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-6">
+            <!-- Section will display the weather for the location entered -->
+            <div 
+            *ngIf="weatherData"
+            class="card col-md-6 mt-4">
+                <div class="card-body">
+                    <h3 class="card-title text-center">
+                        Weather Details
+                    </h3>
+                    <div class="text-center my-4">
+                        <img
+                        class="card-img"
+                        style="width: 5rem;"
+                        [src]="this.weatherData?.current.weather_icons[0]" alt="weather icon">
+                    </div>
+                    <p class="card-text text-center">Current weather conditions: {{ this.weatherData?.current.weather_descriptions }}</p>
+                    <p class="card-text text-center">Temperture: {{ this.weatherData?.current.temperature + '&deg;F'}}</p>
+                    <p class="card-text text-center">Feels like: {{ this.weatherData?.current.feelslike + '&deg;F'}}</p>
+                    <p class="card-text text-center">Location Searched: {{ this.weatherData?.location.name + ', ' + this.weatherData?.location.region }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
