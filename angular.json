@@ -121,8 +121,13 @@
               "devServerTarget": "angular-weather-app:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "angular-weather-app"
 }
