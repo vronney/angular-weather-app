@@ -50,6 +50,7 @@
                     <p class="card-text text-center">Temperture: {{ this.weatherData?.current.temperature + '&deg;F'}}</p>
                     <p class="card-text text-center">Feels like: {{ this.weatherData?.current.feelslike + '&deg;F'}}</p>
                     <p class="card-text text-center">Location Searched: {{ this.weatherData?.location.name + ', ' + this.weatherData?.location.region }}</p>
+                    <p class="card-text text-center pl-3">Location Local Time: {{ this.weatherData?.location.localtime | date: 'shortTime'}}</p>
                 </div>
             </div>
         </div>

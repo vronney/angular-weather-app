@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { ApixuService } from '../apixu.service';
 
@@ -30,6 +30,7 @@ export class WeatherComponent implements OnInit {
       .subscribe(
         data => this.weatherData = data);
     this.searchValue = '';
+    this.weatherSearchForm.reset();
     console.log(this.weatherData);
   }
 
