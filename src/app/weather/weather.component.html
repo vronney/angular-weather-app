@@ -17,7 +17,7 @@
                         [value]="searchValue"
                         id="weatherLocation"
                         aria-describedby="weatherLocation"
-                        placeholder="Please input a Location">
+                        placeholder="Please enter city, state">
                 </div>
                 <div class="text-center">
                     <button
@@ -44,13 +44,14 @@
                         <img
                         class="card-img"
                         style="width: 5rem;"
-                        [src]="this.weatherData?.current.weather_icons[0]" alt="weather icon">
+                        [src]="'https://www.weatherbit.io/static/img/icons/' + this.weatherData?.data[0].weather.icon + '.png'" alt="weather icon">
                     </div>
-                    <p class="card-text text-center">Current weather conditions: {{ this.weatherData?.current.weather_descriptions }}</p>
-                    <p class="card-text text-center">Temperture: {{ this.weatherData?.current.temperature + '&deg;F'}}</p>
-                    <p class="card-text text-center">Feels like: {{ this.weatherData?.current.feelslike + '&deg;F'}}</p>
-                    <p class="card-text text-center">Location Searched: {{ this.weatherData?.location.name + ', ' + this.weatherData?.location.region }}</p>
-                    <p class="card-text text-center pl-3">Location Local Time: {{ this.weatherData?.location.localtime | date: 'shortTime'}}</p>
+                    <p class="card-text text-center">Current weather conditions: {{ this.weatherData?.data[0].weather.description }}</p>
+                    <p class="card-text text-center">Temperture: {{ this.weatherData?.data[0].temp + '&deg;F'}}</p>
+                    <p 
+                        *ngIf="this.weatherData?.data[0].app_temp"
+                        class="card-text text-center">Feels like: {{ this.weatherData?.data[0].app_temp + '&deg;F'}}</p>
+                    <p class="card-text text-center">Location Searched: <span>{{ this.weatherData?.data[0].city_name + ', ' + this.weatherData?.data[0].state_code }}</span></p>
                 </div>
             </div>
         </div>
