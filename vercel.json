@@ -6,11 +6,18 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist/angular-weather-app",
-        "buildCommand": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --prod"
+        "buildCommand": "npm install -g @angular/cli && npm install && ng build --prod"
       }
     }
   ],
   "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
