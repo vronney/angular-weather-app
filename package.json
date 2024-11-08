@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "set NODE_OPTIONS=--openssl-legacy-provider && ng serve",
-    "build": "ng build",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -21,7 +21,6 @@
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
-    "@zeit/ng-deploy": "^0.3.0",
     "bootstrap": "^4.4.0",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
@@ -48,5 +47,8 @@
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~3.8.3"
+  },
+  "engines": {
+    "node": "16.20.x"
   }
 }
