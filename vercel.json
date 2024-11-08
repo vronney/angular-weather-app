@@ -5,7 +5,8 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist/angular-weather-app"
+        "distDir": "dist/angular-weather-app",
+        "buildCommand": "export NODE_OPTIONS=--openssl-legacy-provider && ng build --prod"
       }
     }
   ],
