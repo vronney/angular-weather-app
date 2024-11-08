@@ -6,22 +6,27 @@ import { isNumber } from 'util';
   providedIn: 'root'
 })
 export class ApixuService {
+  private API_KEY = 'bb28421491794a85978d17ba66dab077';
+  private BASE_URL = 'https://api.weatherbit.io/v2.0/current';
 
   constructor(private http: HttpClient) { }
 
+  getWeatherByCoords(coords: {lat: number, lon: number}) {
+    return this.http.get(
+      `${this.BASE_URL}?lat=${coords.lat}&lon=${coords.lon}&key=${this.API_KEY}&units=I`
+    );
+  }
+
   getWeather(location) {
     const numbersOnly = /^[0-9]/;
-    // Will check if location values are numbers or a string
-    // User can input postal code or name of city and state
     if (location.match(numbersOnly)) {
       return this.http.get(
-        'https://api.weatherbit.io/v2.0/current?postal_code= ' + location + '&key=bb28421491794a85978d17ba66dab077&lang=en&units=I'
+        `${this.BASE_URL}?postal_code=${location}&key=${this.API_KEY}&units=I`
       );
     } else {
       return this.http.get(
-        'https://api.weatherbit.io/v2.0/current?city= ' + location + '&key=bb28421491794a85978d17ba66dab077&lang=en&units=I'
+        `${this.BASE_URL}?city=${location}&key=${this.API_KEY}&units=I`
       );
     }
   }
-
 }

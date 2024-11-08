@@ -3,57 +3,105 @@
     searching for a location;
     displaying associated weather data for that location    
 -->
-<div class="container">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-6">
-            <h3 class="text-center">Search for Weather:</h3>
-            <form 
-                [formGroup]="weatherSearchForm">  
-                <div class="form-group">
-                    <input 
-                        formControlName="location"
-                        class="form-control"
-                        type="text"
-                        [value]="searchValue"
-                        id="weatherLocation"
-                        aria-describedby="weatherLocation"
-                        placeholder="Please enter city, state or postal code">
-                </div>
-                <div class="text-center">
-                    <button
-                        (click)="sendToAPIXU(weatherSearchForm.value)"
-                        type="submit"
-                        class="btn btn-success btn-md">
-                            Search for the weather
-                    </button>
-                </div>
-            </form>
-        </div>
+<div class="dashboard-container" [class.dark-theme]="isDarkMode$ | async">
+  <!-- Side Panel -->
+  <aside class="side-panel">
+    <div class="side-panel-header">
+      <h1>Weather Dashboard</h1>
+      <button 
+        class="theme-toggle" 
+        (click)="toggleTheme()" 
+        [attr.aria-label]="(isDarkMode$ | async) ? 'Switch to light mode' : 'Switch to dark mode'">
+        <i class="fas" [class.fa-sun]="isDarkMode$ | async" [class.fa-moon]="!(isDarkMode$ | async)"></i>
+      </button>
     </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-6 weatherDetails">
-            <!-- Section will display the weather for the location entered -->
-            <div 
-            *ngIf="weatherData"
-            class="card mt-4">
-                <div class="card-body">
-                    <h3 class="card-title text-center">
-                        Weather Details
-                    </h3>
-                    <div class="text-center my-4">
-                        <img
-                        class="card-img"
-                        style="width: 5rem;"
-                        [src]="'https://www.weatherbit.io/static/img/icons/' + this.weatherData?.data[0].weather.icon + '.png'" alt="weather icon">
-                    </div>
-                    <p class="card-text text-center">Current weather conditions: {{ this.weatherData?.data[0].weather.description }}</p>
-                    <p class="card-text text-center">Temperture: {{ this.weatherData?.data[0].temp + '&deg;F'}}</p>
-                    <p 
-                        *ngIf="this.weatherData?.data[0].app_temp"
-                        class="card-text text-center">Feels like: {{ this.weatherData?.data[0].app_temp + '&deg;F'}}</p>
-                    <p class="card-text text-center">Location Searched: <span>{{ this.weatherData?.data[0].city_name + ', ' + this.weatherData?.data[0].state_code }}</span></p>
-                </div>
-            </div>
+    <div class="search-section">
+      <form [formGroup]="weatherSearchForm" role="search">
+        <div class="form-group">
+          <label for="weatherLocation" class="sr-only">Search location</label>
+          <input 
+            formControlName="location"
+            class="form-control"
+            type="search"
+            [value]="searchValue"
+            id="weatherLocation"
+            aria-label="Enter a city, state or postal code"
+            placeholder="Enter a city, state or postal code"
+            autocomplete="off">
         </div>
+        <button
+          (click)="sendToAPIXU(weatherSearchForm.value)"
+          type="submit"
+          class="btn-search"
+          aria-label="Search weather">
+          <i class="fas fa-search mr-2" aria-hidden="true"></i>
+          Add Location
+        </button>
+      </form>
     </div>
+
+    <div *ngIf="error" class="error-message" role="alert">
+      {{ error }}
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" role="main">
+    <div class="loading-spinner" *ngIf="isLoading">
+      <div class="spinner"></div>
+      <p>Getting your location...</p>
+    </div>
+
+    <div class="weather-grid">
+      <section 
+        *ngFor="let weather of weatherLocations; let i = index"
+        class="weather-card"
+        aria-live="polite">
+        <button 
+          class="remove-location" 
+          (click)="removeLocation(i)"
+          aria-label="Remove this location">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="weather-header">
+          <div>
+            <h2 class="location">
+              {{ weather?.data[0].city_name }}, {{ weather?.data[0].state_code }}
+            </h2>
+            <p class="weather-info">
+              {{ weather?.data[0].weather.description }}
+            </p>
+          </div>
+          <img
+            class="weather-icon"
+            [src]="'https://www.weatherbit.io/static/img/icons/' + weather?.data[0].weather.icon + '.png'" 
+            [alt]="weather?.data[0].weather.description">
+        </div>
+
+        <div class="temperature">
+          {{ weather?.data[0].temp }}&deg;F
+        </div>
+
+        <div class="weather-details">
+          <div class="weather-info">
+            <span class="label">Feels Like</span>
+            <div class="value">{{ weather?.data[0].app_temp }}&deg;F</div>
+          </div>
+          <div class="weather-info">
+            <span class="label">Humidity</span>
+            <div class="value">{{ weather?.data[0].rh }}%</div>
+          </div>
+          <div class="weather-info">
+            <span class="label">Wind Speed</span>
+            <div class="value">{{ weather?.data[0].wind_spd }} mph</div>
+          </div>
+          <div class="weather-info">
+            <span class="label">UV Index</span>
+            <div class="value">{{ weather?.data[0].uv }}</div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
 </div>
